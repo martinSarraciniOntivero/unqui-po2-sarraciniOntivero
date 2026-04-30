@@ -8,7 +8,7 @@ public class Counter {
 	public Counter() {
 		numeros = new ArrayList<Integer>();
 	}
-	public void agregarNumero(int numero) {
+	public void addNumber(int numero) {
 		numeros.add(numero);
 	}
 	
