@@ -33,7 +33,7 @@ class TestSolicitudCreditoHipotecario {
 	    CreditoHipotecario solicitud =
 	            new CreditoHipotecario(
 	                    cliente,
-	                    50000,
+	                    50000,   
 	                    24,
 	                    propiedad);
 
