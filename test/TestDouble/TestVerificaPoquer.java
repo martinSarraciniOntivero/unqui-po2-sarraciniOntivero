@@ -1,139 +1,152 @@
 package TestDouble;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
 
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import TPDoubles.Jugada;
-import TPDoubles.Poker;
-import TPDoubles.PokerStatus;
 import TPDoubles.Carta;
-import TPDoubles.Color;
-import TPDoubles.Trio;
-
+import TPDoubles.Jugada;
+import TPDoubles.PokerStatus;
 
 public class TestVerificaPoquer {
-	private List<Carta> cartasPoker;
-	private List<Carta> cartasNoPoker;
-	private List<Carta> cartasColor;
-	private List<Carta> cartasNoColor;
-	private List<Carta> cartasTrio;
-	private List<Carta> cartasNoTrio;
-    private PokerStatus pokerStatus; // El objeto a probar (SUT: System Under Test)
+
+    private PokerStatus pokerStatus;
+
+    private Jugada poker;
+    private Jugada color;
+    private Jugada trio;
+
+    private List<Carta> cartas;
 
     @BeforeEach
     public void setUp() {
-        // SETUP: Inicializamos el objeto antes de cada prueba
-    	 cartasPoker = List.of(
-    		    new Carta("A", "P"),
-    		    new Carta("A", "C"),
-    		    new Carta("A", "D"),
-    		    new Carta("A", "T"),
-    		    new Carta("5", "P")
-    		);
-    	 cartasNoPoker = List.of(
-    			    new Carta("A", "P"),
-    			    new Carta("2", "C"),
-    			    new Carta("4", "D"),
-    			    new Carta("7", "T"),
-    			    new Carta("K", "P")
-    			);
-    	 cartasColor = List.of(
-    		    new Carta("2", "P"),
-    		    new Carta("5", "P"),
-    		    new Carta("8", "P"),
-    		    new Carta("J", "P"),
-    		    new Carta("K", "P")
-    		);
-    	 cartasNoColor = List.of(
-    		    new Carta("2", "P"),
-    		    new Carta("5", "P"),
-    		    new Carta("8", "P"),
-    		    new Carta("J", "C"),
-    		    new Carta("K", "P")
-    		);
-    	 cartasTrio = List.of(
-    		    new Carta("7", "P"),
-    		    new Carta("7", "C"),
-    		    new Carta("7", "D"),
-    		    new Carta("J", "T"),
-    		    new Carta("K", "P")
-    		);
-    	 cartasNoTrio = List.of(
-    			    new Carta("7", "P"),
-    			    new Carta("7", "C"),
-    			    new Carta("2", "D"),
-    			    new Carta("J", "T"),
-    			    new Carta("K", "P")
-    			);
-        List<Jugada> jugadas = List.of(
-                new Poker(),
-                new Color(),
-                new Trio()
-            );
-        pokerStatus = new PokerStatus(jugadas);
+
+        // Creamos los mocks
+        poker = mock(Jugada.class);
+        color = mock(Jugada.class);
+        trio = mock(Jugada.class);
+
+       
+        cartas = List.of();
+
+        pokerStatus = new PokerStatus(
+                List.of(poker, color, trio)
+        );
     }
 
     @Test
-    public void testTienePokerCuandoHayCuatroCartasConMismoNumero() {
-        // EXERCISE: Ejecutamos el método que queremos probar
-        String resultado = pokerStatus.verificar(cartasPoker);
+    public void testDevuelvePokerCuandoLaPrimeraJugadaCumple() {
 
-        // VERIFY: Comprobamos si el resultado es el esperado
+        // Arrange
+        when(poker.cumpleJugada(cartas))
+                .thenReturn(true);
+
+        when(poker.getNombre())
+                .thenReturn("Poker");
+
+        // Act
+        String resultado = pokerStatus.verificar(cartas);
+
+        // verify
         assertEquals("Poker", resultado);
-    }
-    @Test 
-    public void testNoTienePokerCuandoNoHayCuatroCartasConMismoNumero() {
-        // EXERCISE: Ejecutamos el método que queremos probar
-        String resultado = pokerStatus.verificar(cartasNoPoker);
 
-        // VERIFY: Comprobamos si el resultado es el esperado
-        assertEquals("sin jugada", resultado);
-    }
-    @Test 
-    public void testTieneColorCuandoHayCincoCartasConMismoPalo() {
-        // EXERCISE: Ejecutamos el método que queremos probar
-        String resultado = pokerStatus.verificar(cartasColor);
+        verify(poker).cumpleJugada(cartas);
+        verify(poker).getNombre();
 
-        // VERIFY: Comprobamos si el resultado es el esperado
-        assertEquals("Color", resultado);
+        verify(color, never()).cumpleJugada(any());
+        verify(trio, never()).cumpleJugada(any());
     }
     @Test
-    public void testNoTieneColorCuandoNoHayCincoCartasConMismoPalo() {
-        // EXERCISE: Ejecutamos el método que queremos probar
-        String resultado = pokerStatus.verificar(cartasNoColor);
+    public void testDevuelveColorCuandoPokerNoCumpleYColorSi() {
 
-        // VERIFY: Comprobamos si el resultado es el esperado
-        assertEquals("sin jugada", resultado);
+        // Arrange
+        when(poker.cumpleJugada(cartas))
+                .thenReturn(false);
+
+        when(color.cumpleJugada(cartas))
+                .thenReturn(true);
+
+        when(color.getNombre())
+                .thenReturn("Color");
+
+        // Act
+        String resultado = pokerStatus.verificar(cartas);
+
+        // verify
+        assertEquals("Color", resultado);
+
+        verify(poker).cumpleJugada(cartas);
+
+        verify(color).cumpleJugada(cartas);
+        verify(color).getNombre();
+
+        verify(trio, never()).cumpleJugada(any());
     }
-   @Test 
-   public void testTieneTrioCuandoHayTresCartasConMismoValor() {
-       // EXERCISE: Ejecutamos el método que queremos probar
-       String resultado = pokerStatus.verificar(cartasTrio);
+    @Test
+    public void testDevuelveTrioCuandoPokerYColorNoCumplen() {
 
-       // VERIFY: Comprobamos si el resultado es el esperado
-       assertEquals("Trio", resultado);
-   }
-   @Test 
-   public void testNoTieneTrioCuandoNoHayTresCartasConMismoValor() {
-       // EXERCISE: Ejecutamos el método que queremos probar
-       String resultado = pokerStatus.verificar(cartasNoTrio);
+        // Arrange
+        when(poker.cumpleJugada(cartas))
+                .thenReturn(false);
 
-       // VERIFY: Comprobamos si el resultado es el esperado
-       assertEquals("sin jugada", resultado);
-   }
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
+        when(color.cumpleJugada(cartas))
+                .thenReturn(false);
+
+        when(trio.cumpleJugada(cartas))
+                .thenReturn(true);
+
+        when(trio.getNombre())
+                .thenReturn("Trio");
+
+        // Act
+        String resultado = pokerStatus.verificar(cartas);
+
+        // verify
+        assertEquals("Trio", resultado);
+
+        verify(poker).cumpleJugada(cartas);
+
+        verify(color).cumpleJugada(cartas);
+
+        verify(trio).cumpleJugada(cartas);
+        verify(trio).getNombre();
+    }
+    @Test
+    public void testDevuelveSinJugadaCuandoNingunaCumple() {
+
+        List<Carta> cartas = List.of();
+
+        when(poker.cumpleJugada(cartas))
+                .thenReturn(false);
+
+        when(color.cumpleJugada(cartas))
+                .thenReturn(false);
+
+        when(trio.cumpleJugada(cartas))
+                .thenReturn(false);
+
+        String resultado = pokerStatus.verificar(cartas);
+
+        assertEquals("sin jugada", resultado);
+
+        verify(poker).cumpleJugada(cartas);
+        verify(color).cumpleJugada(cartas);
+        verify(trio).cumpleJugada(cartas);
+
+        verify(poker, never()).getNombre();
+        verify(color, never()).getNombre();
+        verify(trio, never()).getNombre();
+    }    
 }
+   
+   
+   
+   
+   
+   
+   
+   
