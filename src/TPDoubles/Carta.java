@@ -1,22 +1,27 @@
 package TPDoubles;
 
 public class Carta {
-	private String codigo;
+	private String palo;
+	private String numero;
 
-	public Carta(String codigo) {
-		this.setCodigo(codigo);
+	public Carta(String numero, String palo) {
+		this.setPalo(palo);
+		this.setNumero(numero);
 	}
 
-	public String getCodigo() {
-		return codigo;
+	public String getPalo() {
+		return palo;
 	}
-	public void setCodigo(String codigo) {
-		this.codigo = codigo;
+
+	public void setPalo(String palo) {
+		this.palo = palo;
 	}
-	public String obtenerValorNum() {
-		 return codigo.substring(0, codigo.length() - 1);
+
+	public String getNumero() {
+		return numero;
 	}
-	public String obtenerValorPalo() {
-		return codigo.substring(codigo.length()-1);
+
+	public void setNumero(String numero) {
+		this.numero = numero;
 	}
 }

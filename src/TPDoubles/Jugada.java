@@ -1,6 +1,8 @@
 package TPDoubles;
 
+import java.util.List;
+
 public interface Jugada {
-	public boolean cumpleJugada(Carta[] cartas);
+	public boolean cumpleJugada(List<Carta> cartas);
 	public String getNombre();
 }
