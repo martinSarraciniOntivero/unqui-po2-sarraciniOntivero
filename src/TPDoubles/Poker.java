@@ -18,9 +18,9 @@ public class Poker implements Jugada {
 	}
 
 	@Override
-	public String getNombre() {
+	public TipoDeJugada getTipo() {
 		
-		return "Poker";
+		return TipoDeJugada.POKER;
 	}
 
 }

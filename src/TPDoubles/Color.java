@@ -18,9 +18,12 @@ public class Color implements Jugada {
 	}
 
 	@Override
-	public String getNombre() {
-
-		return "Color";
+	public TipoDeJugada getTipo() {
+		
+		return TipoDeJugada.COLOR;
 	}
+
+	
+
 
 }

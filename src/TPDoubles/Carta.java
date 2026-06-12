@@ -3,10 +3,12 @@ package TPDoubles;
 public class Carta {
 	private String palo;
 	private String numero;
+	private ValoresCarta valorCarta; 
 
-	public Carta(String numero, String palo) {
+	public Carta(String numero, String palo,ValoresCarta valorCarta ) {
 		this.setPalo(palo);
 		this.setNumero(numero);
+		this.setValorCarta(valorCarta);
 	}
 
 	public String getPalo() {
@@ -23,5 +25,16 @@ public class Carta {
 
 	public void setNumero(String numero) {
 		this.numero = numero;
+	}
+
+	public ValoresCarta getValorCarta() {
+		return valorCarta;
+	}
+
+	public void setValorCarta(ValoresCarta valorCarta) {
+		this.valorCarta = valorCarta;
+	}
+	public int getValorNumerico() {
+	    return valorCarta.getValor();
 	}
 }

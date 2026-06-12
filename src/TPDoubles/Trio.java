@@ -18,9 +18,10 @@ public class Trio implements Jugada {
 	}
 
 	@Override
-	public String getNombre() {
-
-		return "Trio";
+	public TipoDeJugada getTipo() {
+		
+		return TipoDeJugada.TRIO;
 	}
+
 
 }

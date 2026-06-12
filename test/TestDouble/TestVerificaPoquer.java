@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import TPDoubles.Carta;
 import TPDoubles.Jugada;
 import TPDoubles.PokerStatus;
+import TPDoubles.TipoDeJugada;
 
 public class TestVerificaPoquer {
 
@@ -45,17 +46,17 @@ public class TestVerificaPoquer {
         when(poker.cumpleJugada(cartas))
                 .thenReturn(true);
 
-        when(poker.getNombre())
-                .thenReturn("Poker");
+        when(poker.getTipo())
+                .thenReturn(TipoDeJugada.POKER);
 
         // Act
-        String resultado = pokerStatus.verificar(cartas);
+        TipoDeJugada resultado = pokerStatus.verificar(cartas);
 
         // verify
-        assertEquals("Poker", resultado);
+        assertEquals(TipoDeJugada.POKER, resultado);
 
         verify(poker).cumpleJugada(cartas);
-        verify(poker).getNombre();
+        verify(poker).getTipo();
 
         verify(color, never()).cumpleJugada(any());
         verify(trio, never()).cumpleJugada(any());
@@ -70,19 +71,19 @@ public class TestVerificaPoquer {
         when(color.cumpleJugada(cartas))
                 .thenReturn(true);
 
-        when(color.getNombre())
-                .thenReturn("Color");
+        when(color.getTipo())
+                .thenReturn(TipoDeJugada.COLOR);
 
         // Act
-        String resultado = pokerStatus.verificar(cartas);
+        TipoDeJugada resultado = pokerStatus.verificar(cartas);
 
         // verify
-        assertEquals("Color", resultado);
+        assertEquals(TipoDeJugada.COLOR, resultado);
 
         verify(poker).cumpleJugada(cartas);
 
         verify(color).cumpleJugada(cartas);
-        verify(color).getNombre();
+        verify(color).getTipo();
 
         verify(trio, never()).cumpleJugada(any());
     }
@@ -99,21 +100,21 @@ public class TestVerificaPoquer {
         when(trio.cumpleJugada(cartas))
                 .thenReturn(true);
 
-        when(trio.getNombre())
-                .thenReturn("Trio");
+        when(trio.getTipo())
+                .thenReturn(TipoDeJugada.TRIO);
 
         // Act
-        String resultado = pokerStatus.verificar(cartas);
+        TipoDeJugada resultado = pokerStatus.verificar(cartas);
 
         // verify
-        assertEquals("Trio", resultado);
+        assertEquals(TipoDeJugada.TRIO, resultado);
 
         verify(poker).cumpleJugada(cartas);
 
         verify(color).cumpleJugada(cartas);
 
         verify(trio).cumpleJugada(cartas);
-        verify(trio).getNombre();
+        verify(trio).getTipo();
     }
     @Test
     public void testDevuelveSinJugadaCuandoNingunaCumple() {
@@ -129,17 +130,17 @@ public class TestVerificaPoquer {
         when(trio.cumpleJugada(cartas))
                 .thenReturn(false);
 
-        String resultado = pokerStatus.verificar(cartas);
+        TipoDeJugada resultado = pokerStatus.verificar(cartas);
 
-        assertEquals("sin jugada", resultado);
+        assertEquals(TipoDeJugada.NADA, resultado);
 
         verify(poker).cumpleJugada(cartas);
         verify(color).cumpleJugada(cartas);
         verify(trio).cumpleJugada(cartas);
 
-        verify(poker, never()).getNombre();
-        verify(color, never()).getNombre();
-        verify(trio, never()).getNombre();
+        verify(poker, never()).getTipo();
+        verify(color, never()).getTipo();
+        verify(trio, never()).getTipo();
     }    
 }
    

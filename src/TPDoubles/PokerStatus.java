@@ -7,15 +7,15 @@ import java.util.List;
 public class PokerStatus {
 	private List<Jugada> jugadas;
 	
-    public String verificar( List<Carta> cartas) {
+    public TipoDeJugada verificar( List<Carta> cartas) {
  
 
     	for(Jugada jugada: jugadas) {
     		if(jugada.cumpleJugada(cartas)) {
-    			return jugada.getNombre();
+    			return jugada.getTipo();
     		}
     	}
-    	return "sin jugada";
+    	return TipoDeJugada.NADA;
     	
     }
 
@@ -29,5 +29,6 @@ public class PokerStatus {
 	public PokerStatus(List<Jugada> listaJugadas) {
 		this.setJugadas(listaJugadas);
 	}
+	
 
 }
